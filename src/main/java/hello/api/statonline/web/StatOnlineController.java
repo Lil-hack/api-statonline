@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api-statOnline")
 public class StatOnlineController {
     private static final Logger logger = LoggerFactory.getLogger(StatOnlineController.class);
