@@ -75,10 +75,11 @@ public class StatOnlineController {
 
 
     @GetMapping("/getAll{uuid}")
-    public ResponseEntity<List<StatOnlineInfo>> findAll(@RequestHeader(value="Authorization",required = false) String token,@RequestParam UUID uuid) {
+    public ResponseEntity findAll(@RequestHeader(value="Authorization",required = false) String token,@RequestParam UUID uuid) {
         try {
-            if(!OauthCheckToken(token))
-                return   new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            if(OauthCheckToken(token)==false) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
 
             List<StatOnlineInfo> stats = StatOnlineInfo.findAllStatsByUUID(uuid);
 
@@ -97,10 +98,11 @@ public class StatOnlineController {
     }
 
     @GetMapping("/getDay{uuid}")
-    public ResponseEntity<List<StatOnlineInfo>> findDay(@RequestHeader(value="Authorization",required = false) String token,@RequestParam UUID uuid) {
+    public ResponseEntity findDay(@RequestHeader(value="Authorization",required = false) String token, @RequestParam UUID uuid) {
         try {
-            if(!OauthCheckToken(token))
-                return   new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            if(OauthCheckToken(token)==false) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
             List<StatOnlineInfo> stats = StatOnlineInfo.findDayStatsByUUID(uuid);
 
             if (stats.isEmpty()) {
@@ -117,10 +119,11 @@ public class StatOnlineController {
     }
 
     @GetMapping("/getWeek{uuid}")
-    public ResponseEntity<List<StatOnlineInfo>> findWeek(@RequestHeader(value="Authorization",required = false) String token,@RequestParam UUID uuid) {
+    public ResponseEntity findWeek(@RequestHeader(value="Authorization",required = false) String token, @RequestParam UUID uuid) {
         try {
-            if(!OauthCheckToken(token))
-                return   new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            if(OauthCheckToken(token)==false) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
             List<StatOnlineInfo> stats = StatOnlineInfo.findWeekStatsByUUID(uuid);
 
             if (stats.isEmpty()) {
@@ -137,10 +140,11 @@ public class StatOnlineController {
     }
 
     @GetMapping("/getMonth{uuid}")
-    public ResponseEntity<List<StatOnlineInfo>> findMonth(@RequestHeader(value="Authorization",required = false) String token,@RequestParam UUID uuid) {
+    public ResponseEntity findMonth(@RequestHeader(value="Authorization",required = false) String token, @RequestParam UUID uuid) {
         try {
-            if(!OauthCheckToken(token))
-                return   new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            if(OauthCheckToken(token)==false) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
             List<StatOnlineInfo> stats = StatOnlineInfo.findMonthStatsByUUID(uuid);
 
             if (stats.isEmpty()) {
@@ -160,8 +164,9 @@ public class StatOnlineController {
     @PostMapping("/create")
     public ResponseEntity createStat(@RequestHeader(value="Authorization",required = false) String token,@RequestBody Map<String, String> info) {
         try {
-            if(!OauthCheckToken(token))
-                return   new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            if(OauthCheckToken(token)==false) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
             StatOnlineInfo.createStatistic(UUID.fromString(info.get("uid")), info.get("vk"));
 
             return new ResponseEntity(HttpStatus.CREATED);
@@ -172,10 +177,11 @@ public class StatOnlineController {
     }
 
     @GetMapping("/get{vk}{uuid}")
-    public ResponseEntity<StatOnlineInfo> getStat(@RequestHeader(value="Authorization",required = false) String token,@RequestParam String vk, @RequestParam UUID uuid) {
+    public ResponseEntity getStat(@RequestHeader(value="Authorization",required = false) String token, @RequestParam String vk, @RequestParam UUID uuid) {
         try {
-            if(!OauthCheckToken(token))
-                return   new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            if(OauthCheckToken(token)==false) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
 
             return new ResponseEntity(StatOnlineInfo.refreshStatistic(uuid, vk), HttpStatus.OK);
         } catch (Exception e) {
@@ -188,8 +194,9 @@ public class StatOnlineController {
     public ResponseEntity deleteStats(@RequestHeader(value="Authorization",required = false) String token,@RequestParam UUID uuid) {
 
         try {
-            if(!OauthCheckToken(token))
-                return   new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            if(OauthCheckToken(token)==false) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
 
             StatOnlineInfo.deleteStats(uuid);
 
